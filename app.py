@@ -1,5 +1,5 @@
 #!rest/bin/python
-from flask import Flask, jsonify, abort
+from flask import Flask, jsonify, abort, make_response
 app = Flask(__name__)
 
 quotes = [
@@ -33,6 +33,10 @@ def get_quote(quote_id):
     if len(quote) == 0:
         abort(404)
     return jsonify({'quote': quote[0]})
+
+@app.errorhandler(404)
+def not_found(error):
+    return make_response(jsonify({'error': 'OOPS! Quote not found'}), 404)
 
 
 if __name__ == '__main__':
