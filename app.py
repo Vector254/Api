@@ -1,5 +1,5 @@
 #!rest/bin/python
-from flask import Flask, jsonify, abort, make_response,request
+from flask import Flask, jsonify, abort, make_response,request, url_for
 app = Flask(__name__)
 
 quotes = [
@@ -23,7 +23,7 @@ def index():
 
 @app.route('/vector/api/v1.0/quotes', methods=['GET'])
 def get_tasks():
-    return jsonify({'quotes': quotes})
+    return jsonify({'quotes': [make_public_quote(quote) for quote in quotes]})
 
 
 
@@ -76,6 +76,15 @@ def delete_quote(quote_id):
         abort(404)
     quotes.remove(quote[0])
     return jsonify({'result': True})
+
+def make_public_quote(quote):
+    new_quote = {}
+    for field in quote:
+        if field == 'id':
+            new_quote['uri'] = url_for('get_quote', quote_id=quote['id'], _external=True)
+        else:
+            new_quote[field] = quote[field]
+    return new_quote
 
 if __name__ == '__main__':
     app.run(debug=True)
