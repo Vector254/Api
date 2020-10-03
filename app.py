@@ -32,7 +32,7 @@ def get_quote(quote_id):
     quote = [quote for quote in quotes if quote['id'] == quote_id]
     if len(quote) == 0:
         abort(404)
-    return jsonify({'quote': quote[0]})
+    return jsonify({'quote': [make_public_quote(quote[0])]})
 
 @app.errorhandler(404)
 def not_found(error):
@@ -49,7 +49,7 @@ def create_quote():
         'author': request.json.get('author',"")
     }
     quotes.append(quote)
-    return jsonify({'quote': quote}), 201
+    return jsonify({'quote':[make_public_quote(quote)]}), 201
 
 @app.route('/vector/api/v1.0/quotes/<int:quote_id>', methods=['PUT'])
 def update_quote(quote_id):
@@ -67,7 +67,7 @@ def update_quote(quote_id):
     quote[0]['title'] = request.json.get('title', quote[0]['title'])
     quote[0]['description'] = request.json.get('description', quote[0]['description'])
     quote[0]['title'] = request.json.get('author', quote[0]['author'])
-    return jsonify({'quote': quote[0]})
+    return jsonify({'quote': [make_public_quote(quote[0])]})
 
 @app.route('/vector/api/v1.0/quotes/<int:quote_id>', methods=['DELETE'])
 def delete_quote(quote_id):
