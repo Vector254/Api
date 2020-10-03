@@ -12,6 +12,7 @@ db = SQLAlchemy()
 
 
 def create_app(config_name):
+    from app import models
     from app.models import Quotes
 
     app = FlaskAPI(__name__, instance_relative_config=True)
@@ -42,13 +43,15 @@ def create_app(config_name):
 
        
         if request.method == "POST":
-            name = str(request.data.get('title', ''))
+            title = str(request.data.get('title', ''))
+            author = str(request.data.get('author', ''))
+            description = str(request.data.get('description', ''))
            
-            quote = Quotes(name=name)
+            quote = Quotes(title=title,author=author,description=description)
             quote.save()
             response = jsonify({
                     'id': quote.id,
-                    'title': quote.name,
+                    'title': quote.title,
                     'date_created': quote.date_created,
                     'description': quote.description,
                     'author': quote.author,
@@ -89,12 +92,17 @@ def create_app(config_name):
          }, 200
 
         elif request.method == 'PUT':
-            name = str(request.data.get('title', ''))
-            quote.name = name
+            title = str(request.data.get('title', ''))
+            author = str(request.data.get('author', ''))
+            description = str(request.data.get('description', ''))
+            quote.title = title
+            quote.author = author
+            quote.description = description
+
             quote.save()
             response = jsonify({
                     'id': quote.id,
-                    'title': quote.name,
+                    'title': quote.title,
                     'date_created': quote.date_created,
                     'description': quote.description,
                     'author': quote.author,
