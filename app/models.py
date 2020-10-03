@@ -8,7 +8,7 @@ class Quotes(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(255))
     date_created = db.Column(db.DateTime, default=db.func.current_timestamp())
-    descricption = db.Column(db.String(255))
+    description = db.Column(db.String(255))
     author = db.Column(db.String(255))
 
     def __init__(self, name):
