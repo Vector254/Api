@@ -1,5 +1,9 @@
 #!rest/bin/python
 from flask import Flask, jsonify, abort, make_response,request, url_for
+from flask_httpauth import HTTPBasicAuth
+
+auth = HTTPBasicAuth()
+
 app = Flask(__name__)
 
 quotes = [
@@ -22,6 +26,7 @@ def index():
     return 'What a bright day!'
 
 @app.route('/vector/api/v1.0/quotes', methods=['GET'])
+@auth.login_required
 def get_tasks():
     return jsonify({'quotes': [make_public_quote(quote) for quote in quotes]})
 
@@ -85,6 +90,16 @@ def make_public_quote(quote):
         else:
             new_quote[field] = quote[field]
     return new_quote
+
+@auth.get_password
+def get_password(username):
+    if username == 'vector':
+        return 'python'
+    return None
+
+@auth.error_handler
+def unauthorized():
+    return make_response(jsonify({'error': 'Unauthorized access'}), 403)
 
 if __name__ == '__main__':
     app.run(debug=True)
