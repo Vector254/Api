@@ -51,6 +51,24 @@ def create_quote():
     quotes.append(quote)
     return jsonify({'quote': quote}), 201
 
+@app.route('/vector/api/v1.0/quotes/<int:quote_id>', methods=['PUT'])
+def update_quote(quote_id):
+    quote = [quote for quote in quotes if quote['id'] == quote_id]
+    if len(quote) == 0:
+        abort(404)
+    if not request.json:
+        abort(400)
+    if 'title' in request.json and type(request.json['title']) != str:
+        abort(400)
+    if 'description' in request.json and type(request.json['description']) is not str:
+        abort(400)
+    if 'author' in request.json and type(request.json['author']) is not str:
+        abort(400)
+    quote[0]['title'] = request.json.get('title', quote[0]['title'])
+    quote[0]['description'] = request.json.get('description', quote[0]['description'])
+    quote[0]['title'] = request.json.get('author', quote[0]['author'])
+    return jsonify({'quote': quote[0]})
+
 if __name__ == '__main__':
     app.run(debug=True)
 
