@@ -1,5 +1,5 @@
 #!rest/bin/python
-from flask import Flask, jsonify, abort, make_response
+from flask import Flask, jsonify, abort, make_response,request
 app = Flask(__name__)
 
 quotes = [
@@ -38,6 +38,18 @@ def get_quote(quote_id):
 def not_found(error):
     return make_response(jsonify({'error': 'OOPS! Quote not found'}), 404)
 
+@app.route('/vector/api/v1.0/quotes', methods=['POST'])
+def create_quote():
+    if not request.json or not 'title' in request.json:
+        abort(400)
+    quote = {
+        'id': quotes[-1]['id'] + 1,
+        'title': request.json['title'],
+        'description': request.json.get('description', ""),
+        'author': request.json.get('author',"")
+    }
+    quotes.append(quote)
+    return jsonify({'quote': quote}), 201
 
 if __name__ == '__main__':
     app.run(debug=True)
