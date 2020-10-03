@@ -95,9 +95,11 @@ def create_app(config_name):
             title = str(request.data.get('title', ''))
             author = str(request.data.get('author', ''))
             description = str(request.data.get('description', ''))
+            date_created = str(request.data.get('date_created', ''))
             quote.title = title
             quote.author = author
             quote.description = description
+            quote.date_created = date_created
 
             quote.save()
             response = jsonify({
