@@ -1,5 +1,5 @@
 # app/__init__.py
-from flask import request, jsonify, abort, url_for, make_response
+from flask import request, jsonify, abort, url_for, make_response, render_template
 from flask_api import FlaskAPI
 from flask_sqlalchemy import SQLAlchemy
 
@@ -34,7 +34,7 @@ def create_app(config_name):
 
     @app.route('/')
     def index():
-        return 'Welcome to the quotes API!'
+        return render_template('index.html')
 
 
     @app.route('/vector/api/v1.0/quotes', methods=['POST', 'GET'])
