@@ -47,7 +47,7 @@ def create_app(config_name):
             author = str(request.data.get('author', ''))
             description = str(request.data.get('description', ''))
            
-            quote = Quotes(title=title,author=author,description=description)
+            quote = Quotes(name=title)
             quote.save()
             response = jsonify({
                     'id': quote.id,
