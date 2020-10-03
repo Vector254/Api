@@ -69,6 +69,14 @@ def update_quote(quote_id):
     quote[0]['title'] = request.json.get('author', quote[0]['author'])
     return jsonify({'quote': quote[0]})
 
+@app.route('/vector/api/v1.0/quotes/<int:quote_id>', methods=['DELETE'])
+def delete_quote(quote_id):
+    quote = [quote for quote in quotes if quote['id'] == quote_id]
+    if len(quote) == 0:
+        abort(404)
+    quotes.remove(quote[0])
+    return jsonify({'result': True})
+
 if __name__ == '__main__':
     app.run(debug=True)
 
