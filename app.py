@@ -1,5 +1,5 @@
 #!rest/bin/python
-from flask import Flask, jsonify
+from flask import Flask, jsonify, abort
 app = Flask(__name__)
 
 quotes = [
@@ -17,13 +17,22 @@ quotes = [
     }
 ]
 
+@app.route('/')
+def index():
+    return 'What a bright day!'
+
 @app.route('/vector/api/v1.0/quotes', methods=['GET'])
 def get_tasks():
     return jsonify({'quotes': quotes})
 
-@app.route('/')
-def index():
-    return 'What a bright day!'
+
+
+@app.route('/vector/api/v1.0/quotes/<int:quote_id>', methods=['GET'])
+def get_quote(quote_id):
+    quote = [quote for quote in quotes if quote['id'] == quote_id]
+    if len(quote) == 0:
+        abort(404)
+    return jsonify({'quote': quote[0]})
 
 
 if __name__ == '__main__':
