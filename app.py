@@ -6,20 +6,7 @@ auth = HTTPBasicAuth()
 
 app = Flask(__name__)
 
-quotes = [
-    {
-        'id': 1,
-        'title': u'A new day',
-        'description': u'Darkness may last for a night, but the sun will still rise', 
-        'author': u'anonymous' 
-    },
-    {
-        'id': 2,
-        'title': u'never give up',
-        'description': u'The day you give up, is the day you cease to live', 
-        'author': u'vector'
-    }
-]
+
 
 @app.route('/')
 def index():
