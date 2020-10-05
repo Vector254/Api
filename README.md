@@ -1,4 +1,4 @@
-#  PITCHER
+#  REST API
 #### By 
 + Victor Nduati
 
