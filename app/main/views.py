@@ -76,7 +76,7 @@ def quotes_manipulation(id, **kwargs):
      }, 200
 
     elif request.method == 'PUT':
-        title = str(request.data.get('title', ''))
+        title = str(request.data.decode.get('title', ''))
         author = str(request.data.get('author', ''))
         description = str(request.data.get('description', ''))
         date_created = str(request.data.get('date_created', ''))
